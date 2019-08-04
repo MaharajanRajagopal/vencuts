@@ -1,0 +1,7 @@
+---
+applications:
+- name: rapo-cust-statement
+  random-route: true
+  instances: 1
+  memory: 1GB
+  path: target/Rapo-0.0.1-SNAPSHOT.jar
