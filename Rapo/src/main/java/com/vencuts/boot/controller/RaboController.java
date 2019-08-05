@@ -7,12 +7,9 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,7 +25,6 @@ import com.vencuts.boot.utils.Utilities;
  *
  */
 @RestController
-@RequestMapping("/Rabobank")
 public class RaboController {
 
 	Logger logger = LoggerFactory.getLogger(RaboController.class);
@@ -44,42 +40,17 @@ public class RaboController {
 		this.reboService = reboService;
 	}
 	
-	
-	/**
-	 * @param record1
-	 * @return
-	 */
-	/*
-	 * @PostMapping(path ="/records" ,consumes = {MediaType.APPLICATION_JSON_VALUE,
-	 * MediaType.APPLICATION_XML_VALUE}, produces =
-	 * {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE} ) public
-	 * ResponseEntity<Records> allRecords(@RequestBody Records record1) {
-	 * //reboService.reboValidator(records); return new ResponseEntity<Records>
-	 * (record1,HttpStatus.OK); }
-	 */
-	
-	/**
-	 * @param record
-	 * @return
-	 */
-	/*
-	 * @PostMapping(path ="/record" ,consumes = {MediaType.APPLICATION_JSON_VALUE,
-	 * MediaType.APPLICATION_XML_VALUE}, produces =
-	 * {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE} ) public
-	 * ResponseEntity<Record> record(@RequestBody Record record) {
-	 * //reboService.reboValidator(records); return new ResponseEntity<Record>
-	 * (record,HttpStatus.OK);
-	 * 
-	 * }
-	 */
-	
+	@RequestMapping("/")
+	public String index() {
+		return "Welcome to RABO BANK Customer Statement Validator -- Use Postman ";
+	}
 	/**
 	 * @param Multipart File Input CSV or XML file
 	 * produces xml 
 	 * @return map of valid and invalid Records
 	 */
 	
-	@PostMapping(path="/uploadFile" ,produces = {MediaType.APPLICATION_XML_VALUE})
+	@PostMapping(path="/rabobank/uploadfile" ,produces = {MediaType.APPLICATION_XML_VALUE})
     public Map<String, List<Record>> uploadFile(@RequestParam("file") MultipartFile file) {
 		
 		Map<String, List<Record>> result = new HashMap<>();
@@ -110,11 +81,10 @@ public class RaboController {
 			}
 
 			  result = reboService.validateRecords(records);
-
+			  Utilities.writeExcel(result);
 		} catch (Exception e) {
 
 		}
-		//System.out.println(result.get("inValidRecords"));
 		return result;
     }
 	
