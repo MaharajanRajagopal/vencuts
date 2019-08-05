@@ -1,5 +1,7 @@
 package com.vencuts.boot.controller;
 
+import static com.vencuts.boot.utils.Constants.*;
+
 import java.io.StringReader;
 import java.util.HashMap;
 import java.util.List;
@@ -61,7 +63,7 @@ public class RaboController {
 			StringReader fileContent = new StringReader(new String(file.getBytes()));
 			Records records = null;
 
-			if (file.getOriginalFilename().endsWith(".xml")) {
+			if (file.getOriginalFilename().endsWith(IS_XML)) {
 				/*
 				 * DocumentBuilderFactory dbfac = DocumentBuilderFactory.newInstance();
 				 * DocumentBuilder docBuilder = dbfac.newDocumentBuilder(); Document doc =
@@ -73,13 +75,11 @@ public class RaboController {
 				 * =transformer.transform(xml);
 				 */
 				records = (Records) Utilities.parseXml(fileContent, Records.class);
-				System.out.println("xml file upload");
+				//System.out.println("xml file upload");
 			} else {
-				System.out.println("other file upload");
+				//System.out.println("other file upload");
 				records = Utilities.parseCSV(fileContent);
-				
 			}
-
 			  result = reboService.validateRecords(records);
 			  Utilities.writeExcel(result);
 		} catch (Exception e) {

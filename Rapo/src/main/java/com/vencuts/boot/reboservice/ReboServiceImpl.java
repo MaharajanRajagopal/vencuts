@@ -1,29 +1,17 @@
 package com.vencuts.boot.reboservice;
 
-import java.io.File;
-import java.io.FileOutputStream;
+import static com.vencuts.boot.utils.Constants.DUPLICATE_REF;
+import static com.vencuts.boot.utils.Constants.INVALID_COMP;
+import static com.vencuts.boot.utils.Constants.VALID_REC;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import com.vencuts.boot.utils.Constants;
 import javax.xml.bind.JAXBException;
 import org.springframework.stereotype.Service;
 import com.vencuts.boot.dto.Record;
 import com.vencuts.boot.dto.Records;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFTable;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTTable;
-import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTTableStyleInfo;
 
 /**
  * @author Maharajan Rajagopal
@@ -57,9 +45,9 @@ public class ReboServiceImpl {
 				duplicateReference.add(record);
 			}
 		});
-		result.put(Constants.DUPLICATE_REF, duplicateReference);
-		result.put(Constants.INVALID_COMP, inValidComputation);
-		result.put(Constants.VALID_REC, validRecords);
+		result.put(DUPLICATE_REF, duplicateReference);
+		result.put(INVALID_COMP, inValidComputation);
+		result.put(VALID_REC, validRecords);
 		return result;
 	}
 }

@@ -1,5 +1,6 @@
 package com.vencuts.boot.utils;
 
+import static com.vencuts.boot.utils.Constants.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -25,8 +26,6 @@ import com.vencuts.boot.dto.Records;
 
 public class Utilities {
 	
-	
-	
 	public static <T> Object parseXml(StringReader fileContent, Class<T> clazz) throws JAXBException {
 		JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
 		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
@@ -36,21 +35,27 @@ public class Utilities {
 	public static Records parseCSV(StringReader inputData) throws IOException {
 
 		Records records = new Records();
-		System.out.println("inside parse");
-		
+		//System.out.println("inside parse");
 		try (CSVParser csvParser = new CSVParser(inputData,
 				CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());) {
 
-			List<Record> record = new ArrayList<>();
-			csvParser.forEach(csvRecord -> record.add(
-					new Record(csvRecord.get("Reference"),csvRecord.get("Account Number"),csvRecord.get("Description"),csvRecord.get("Start Balance"),csvRecord.get("Mutation"), csvRecord.get("End Balance")
-							)));
-			records.setRecord(record);
+			List<Record> recordlist = new ArrayList<>();
+			csvParser.forEach(csvRecord -> {
+				Record rec= new Record();
+				rec.setAccountNumber(csvRecord.get(ACCOUNT_NUMBER));
+				rec.setReference(csvRecord.get(REFERENCE));
+				rec.setDescription(csvRecord.get(DESCRIPTION));
+				rec.setStartBalance(csvRecord.get(START_BALANCE));
+				rec.setMutation(csvRecord.get(MUTATION));
+				rec.setEndBalance(csvRecord.get(END_BALANCE));
+				recordlist.add(rec);
+			});
+			records.setRecord(recordlist);
 		}
 		return records;
 	}
 	
-	public static void writeExcel(Map<String, List<Record>> result) {
+	public static void writeExcel(Map<String, List<Record>> result) throws IOException {
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		CellStyle style = workbook.createCellStyle();
 		style.setFillBackgroundColor(IndexedColors.LIGHT_GREEN.getIndex());
@@ -65,41 +70,38 @@ public class Utilities {
 		Set<String> keyset = result.keySet();
 		int rownum = 0;
 		for (String key : keyset) {
-			if (key.equals(Constants.VALID_REC)) {
-				sheet = workbook.createSheet(Constants.VALID_REC);
+			if (key.equals(VALID_REC)) {
+				sheet = workbook.createSheet(VALID_REC);
 				sheet.setColumnWidth(2, 8000);
 				Row header = sheet.createRow(rownum++);
 				Cell cell1 = header.createCell(1);
-				cell1.setCellValue("Reference");
+				cell1.setCellValue(REFERENCE);
 				cell1.setCellStyle(style);
 				Cell cell2 = header.createCell(2);
-				cell2.setCellValue("Description");
+				cell2.setCellValue(DESCRIPTION);
 				cell2.setCellStyle(style);
 			} else if (key.equals(Constants.INVALID_COMP)) {
 				sheet = workbook.createSheet(Constants.INVALID_COMP);
 				sheet.setColumnWidth(2, 8000);
 				Row header = sheet.createRow(rownum++);
 				Cell cell1 = header.createCell(1);
-				cell1.setCellValue("Reference");
+				cell1.setCellValue(REFERENCE);
 				cell1.setCellStyle(style2);
 				Cell cell2 = header.createCell(2);
-				cell2.setCellValue("Description");
+				cell2.setCellValue(DESCRIPTION);
 				cell2.setCellStyle(style2);
 			} else if (key.equals(Constants.DUPLICATE_REF)) {
 				sheet = workbook.createSheet(Constants.DUPLICATE_REF);
 				sheet.setColumnWidth(2, 8000);
 				Row header = sheet.createRow(rownum++);
 				Cell cell1 = header.createCell(1);
-				cell1.setCellValue("Reference");
+				cell1.setCellValue(REFERENCE);
 				cell1.setCellStyle(style3);
 				Cell cell2 = header.createCell(2);
-				cell2.setCellValue("Description");
+				cell2.setCellValue(DESCRIPTION);
 				cell2.setCellStyle(style3);
 			}
-
 			List<Record> record = result.get(key);
-			int cellnum = 0;
-
 			for (Record rec : record) {
 				Row row = sheet.createRow(rownum++);
 				row.createCell(1).setCellValue(rec.getReference());
@@ -116,6 +118,9 @@ public class Utilities {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		finally {
+			workbook.close();
+			
+		}
 	}
 }
