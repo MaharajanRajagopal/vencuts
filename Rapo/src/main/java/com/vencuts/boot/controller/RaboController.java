@@ -44,7 +44,7 @@ public class RaboController {
 	
 	@RequestMapping("/")
 	public String index() {
-		return "Welcome to RABO BANK Customer Statement Validator -- Use Postman ";
+		return "Welcome to RABO BANK Customer Statement Validator -- Use Postman /rabobank/uploadfile with multipart file input";
 	}
 	/**
 	 * @param Multipart File Input CSV or XML file
@@ -62,8 +62,8 @@ public class RaboController {
 		try {
 			StringReader fileContent = new StringReader(new String(file.getBytes()));
 			Records records = null;
-
-			if (file.getOriginalFilename().endsWith(IS_XML)) {
+			String filename = file.getOriginalFilename();
+			if (filename.endsWith(IS_XML)) {
 				/*
 				 * DocumentBuilderFactory dbfac = DocumentBuilderFactory.newInstance();
 				 * DocumentBuilder docBuilder = dbfac.newDocumentBuilder(); Document doc =
@@ -75,13 +75,16 @@ public class RaboController {
 				 * =transformer.transform(xml);
 				 */
 				records = (Records) Utilities.parseXml(fileContent, Records.class);
-				//System.out.println("xml file upload");
-			} else {
-				//System.out.println("other file upload");
+			} else if(filename.endsWith(IS_CSV)){
 				records = Utilities.parseCSV(fileContent);
 			}
+			else {
+				result.put(INVALID_FILE_FORMAT, null);
+				return result;
+			}
 			  result = reboService.validateRecords(records);
-			  Utilities.writeExcel(result);
+			  /* write to Excel is working locally, but pcf couldn't take our local home directory. hence commenting */
+			//  Utilities.writeExcel(result);
 		} catch (Exception e) {
 
 		}
