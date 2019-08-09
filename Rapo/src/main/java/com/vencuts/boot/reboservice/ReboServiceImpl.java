@@ -31,8 +31,7 @@ public class ReboServiceImpl {
 		List<Record> inValidComputation = new ArrayList<>();
 		List<Record> duplicateReference = new ArrayList<>();
 		records.getRecord().forEach(record -> {
-			double endBalenceActual = Double.parseDouble(record.getStartBalance())
-					+ Double.parseDouble(record.getMutation());
+			double endBalenceActual = Double.parseDouble(record.getStartBalance()) + Double.parseDouble(record.getMutation());
 			endBalenceActual = BigDecimal.valueOf(endBalenceActual).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 			double currentendBalence = Double.parseDouble(record.getEndBalance());
 			boolean isDuplicate = validRecords.stream()

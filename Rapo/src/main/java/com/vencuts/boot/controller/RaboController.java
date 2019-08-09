@@ -2,10 +2,20 @@ package com.vencuts.boot.controller;
 
 import static com.vencuts.boot.utils.Constants.*;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.StringReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Stream;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +64,6 @@ public class RaboController {
 	
 	@PostMapping(path="/rabobank/uploadfile" ,produces = {MediaType.APPLICATION_XML_VALUE})
     public Map<String, List<Record>> uploadFile(@RequestParam("file") MultipartFile file) {
-		
 		Map<String, List<Record>> result = new HashMap<>();
 		if (file.isEmpty()) {
 			return result;
@@ -76,7 +85,9 @@ public class RaboController {
 				 */
 				records = (Records) Utilities.parseXml(fileContent, Records.class);
 			} else if(filename.endsWith(IS_CSV)){
-				records = Utilities.parseCSV(fileContent);
+				InputStream inputStream = new ByteArrayInputStream(file.getBytes());
+				records = Utilities.parseCSVJ8(inputStream);
+				
 			}
 			else {
 				result.put(INVALID_FILE_FORMAT, null);
@@ -84,7 +95,7 @@ public class RaboController {
 			}
 			  result = reboService.validateRecords(records);
 			  /* write to Excel is working locally, but pcf couldn't take our local home directory. hence commenting */
-			//  Utilities.writeExcel(result);
+			  Utilities.writeExcel(result);
 		} catch (Exception e) {
 
 		}

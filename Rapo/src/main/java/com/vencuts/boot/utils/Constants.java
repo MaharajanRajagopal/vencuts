@@ -13,6 +13,7 @@ public class Constants {
 	public static String END_BALANCE = "End Balance";
 	public static String IS_XML = ".xml";
 	public static String IS_CSV = ".csv";
+	public static String COMMA = ",";
 	public static String INVALID_FILE_FORMAT = "Invalid_File_format";
 	
 
