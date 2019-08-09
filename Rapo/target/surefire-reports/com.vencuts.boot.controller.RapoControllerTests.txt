@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.vencuts.boot.controller.RapoControllerTests
 -------------------------------------------------------------------------------
-Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.389 s - in com.vencuts.boot.controller.RapoControllerTests
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.497 s - in com.vencuts.boot.controller.RapoControllerTests

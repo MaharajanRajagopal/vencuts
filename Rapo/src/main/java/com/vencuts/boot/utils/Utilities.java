@@ -1,29 +1,21 @@
 package com.vencuts.boot.utils;
 
 import static com.vencuts.boot.utils.Constants.*;
-
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-//import org.apache.commons.csv.CSVFormat;
-//import org.apache.commons.csv.CSVParser;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
@@ -31,8 +23,6 @@ import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.xmlbeans.impl.xb.xmlconfig.NamespaceList.Member2.Item;
-
 import com.vencuts.boot.dto.Record;
 import com.vencuts.boot.dto.Records;
 
@@ -123,7 +113,7 @@ public class Utilities {
 			// Write the workbook in file system String home =
 			String home = System.getProperty("user.home");
 			FileOutputStream out = new FileOutputStream(
-					new File(home + File.separator + "Documents" + File.separator + "records.xlsx"));
+					new File(home + File.separator + "Downloads" + File.separator + "records.xlsx"));
 			workbook.write(out);
 			out.close();
 		} catch (Exception e) {
