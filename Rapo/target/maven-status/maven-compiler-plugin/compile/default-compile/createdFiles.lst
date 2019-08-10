@@ -1,8 +1,8 @@
-com\vencuts\boot\aspect\ReboLogger.class
-com\vencuts\boot\dto\Records.class
 com\vencuts\boot\rapo\RapoApplication.class
 com\vencuts\boot\utils\Utilities.class
 com\vencuts\boot\controller\RaboController.class
+com\vencuts\boot\reboservice\ReboServiceImpl.class
+com\vencuts\boot\aspect\ReboLogger.class
+com\vencuts\boot\dto\Records.class
 com\vencuts\boot\utils\Constants.class
 com\vencuts\boot\dto\Record.class
-com\vencuts\boot\reboservice\ReboServiceImpl.class

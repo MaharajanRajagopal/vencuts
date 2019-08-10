@@ -28,12 +28,24 @@ import com.vencuts.boot.dto.Records;
 
 public class Utilities {
 
+	/**
+	 * @param <T>
+	 * @param fileContent
+	 * @param clazz
+	 * @return Records with list of Record
+	 * @throws JAXBException
+	 */
 	public static <T> Object parseXml(StringReader fileContent, Class<T> clazz) throws JAXBException {
 		JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
 		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 		return jaxbUnmarshaller.unmarshal(fileContent);
 	}
 
+	/**
+	 * @param recordStream
+	 * @return Records
+	 * @throws IOException
+	 */
 	public static Records parseCSVJ8(InputStream recordStream) throws IOException {
 		Records records = new Records();
 		BufferedReader br = new BufferedReader(new InputStreamReader(recordStream));
@@ -41,21 +53,26 @@ public class Utilities {
 		records.setRecord(list);
 		return records;
 	}
-	
+
 	public static Function<String, Record> mapToRecord = (line) -> {
-		  String[] p = line.split(COMMA);// a CSV has comma separated lines
-		  Record record = new Record();
-		  record.setReference(p[0]);
-		  record.setAccountNumber(p[1]);
-		  record.setDescription(p[2]);
-		  record.setStartBalance(p[3]);
-		  record.setMutation(p[4]);
-		  record.setEndBalance(p[5]);
-		  return record;
-		};
-	// Detailed EXCEL report with 3 sheet showing valid, invalidcomputation and
-	// dupicate Reference. working locally jar call
-	public static void writeExcel(Map<String, List<Record>> result) throws IOException {
+		String[] p = line.split(COMMA);// a CSV has comma separated lines
+		Record record = new Record();
+		record.setReference(p[0]);
+		record.setAccountNumber(p[1]);
+		record.setDescription(p[2]);
+		record.setStartBalance(p[3]);
+		record.setMutation(p[4]);
+		record.setEndBalance(p[5]);
+		return record;
+	};
+
+	
+	/**
+	 * @param result
+	 * @return Excel File with three sheets 
+	 * @throws IOException
+	 */
+	public static File writeExcel(Map<String, List<Record>> result) throws IOException {
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		CellStyle style = workbook.createCellStyle();
 		style.setFillBackgroundColor(IndexedColors.LIGHT_GREEN.getIndex());
@@ -110,18 +127,20 @@ public class Utilities {
 			rownum = 0;
 		}
 		try {
-			// Write the workbook in file system String home =
 			String home = System.getProperty("user.home");
-			FileOutputStream out = new FileOutputStream(
-					new File(home + File.separator + "Downloads" + File.separator + "records.xlsx"));
+			File file = new File(home + File.separator +  "records.xlsx");
+			FileOutputStream out = new FileOutputStream(file);
+			
 			workbook.write(out);
 			out.close();
+			return file;
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			workbook.close();
 
 		}
+		return null;
 	}
 
 }

@@ -5,6 +5,8 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -28,11 +30,14 @@ public class RapoControllerTests {
 	@Mock
 	ReboServiceImpl reboService;
 	
+	@Mock
+	HttpServletResponse httpResponse;
+	
 
 	@Test
 	public void repoApplication_emptyfile_Test() {
 		when(file.isEmpty()).thenReturn(true);
-		assertNotNull(rebocontroller.uploadFile(file));
+		assertNotNull(rebocontroller.uploadFile(file,httpResponse));
 	}
 	
 	@Test
@@ -40,7 +45,7 @@ public class RapoControllerTests {
 		when(file.isEmpty()).thenReturn(false);
 		when(file.getBytes()).thenReturn(getxmlRecords().getBytes());
 		when(file.getOriginalFilename()).thenReturn("records.xml");
-		assertNotNull(rebocontroller.uploadFile(file));
+		assertNotNull(rebocontroller.uploadFile(file, httpResponse));
 	}
 	
 	@Test
@@ -48,7 +53,7 @@ public class RapoControllerTests {
 		when(file.isEmpty()).thenReturn(false);
 		when(file.getBytes()).thenReturn(getcsvRecords().getBytes());
 		when(file.getOriginalFilename()).thenReturn("records.csv");
-		assertNotNull(rebocontroller.uploadFile(file));
+		assertNotNull(rebocontroller.uploadFile(file, httpResponse));
 	}
 	
 	static String getxmlRecords() {

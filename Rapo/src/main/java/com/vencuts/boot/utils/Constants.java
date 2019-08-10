@@ -15,6 +15,7 @@ public class Constants {
 	public static String IS_CSV = ".csv";
 	public static String COMMA = ",";
 	public static String INVALID_FILE_FORMAT = "Invalid_File_format";
+	public static String FILE_EMPTY = "File_Content_Empty";
 	
 
 }
